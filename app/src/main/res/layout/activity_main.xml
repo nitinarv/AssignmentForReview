@@ -1,0 +1,133 @@
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/drawer_layout"
+    tools:context=".MainActivity">
+
+
+    <ScrollView
+        android:id="@+id/content_scrollview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <include
+                android:id="@+id/toolbar"
+                layout="@layout/toolbar" />
+
+            <Button
+                android:id="@+id/request_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAllCaps="false"
+                android:text="@string/request_all_tasks"
+                />
+
+            <TextView
+                android:id="@+id/request_1_result"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/request_1_text"
+                android:textStyle="bold"/>
+
+            <ProgressBar
+                android:id="@+id/request_progressBar1"
+                style="@android:style/Widget.ProgressBar.Horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:indeterminate="false"
+                android:max="100"
+                android:progressDrawable="@drawable/style_horizontal"
+                android:secondaryProgress="10" />
+
+            <TextView
+                android:id="@+id/request_1_result_details"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/resultBackground"
+                android:textStyle="bold"
+                android:textColor="@color/resultTextColor"
+                android:text="@string/result_expceted_here"/>
+
+
+            <TextView
+                android:id="@+id/request_2_result"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/request_2_text"
+                android:textStyle="bold"/>
+
+
+            <ProgressBar
+                android:id="@+id/request_progressBar2"
+                style="@android:style/Widget.ProgressBar.Horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:indeterminate="false"
+                android:max="100"
+                android:progressDrawable="@drawable/style_horizontal"
+                android:secondaryProgress="10" />
+
+
+            <TextView
+                android:id="@+id/request_2_result_details"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/resultBackground"
+                android:textStyle="bold"
+                android:textColor="@color/resultTextColor"
+                android:text="@string/result_expceted_here"/>
+
+
+            <TextView
+                android:id="@+id/request_3_result"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/request_3_text"
+                android:textStyle="bold"/>
+
+
+
+            <ProgressBar
+                android:id="@+id/request_progressBar3"
+                style="@android:style/Widget.ProgressBar.Horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:indeterminate="false"
+                android:max="100"
+                android:progressDrawable="@drawable/style_horizontal"
+                android:secondaryProgress="10" />
+
+            <TextView
+                android:id="@+id/request_3_result_details"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/resultBackground"
+                android:textStyle="bold"
+                android:textColor="@color/resultTextColor"
+                android:text="@string/result_expceted_here"/>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <fragment
+        android:id="@+id/fragment_navigation_drawer"
+        android:name="res.truecaller.sample.com.truecallersample.view.FragmentDrawer"
+        android:layout_width="@dimen/nav_drawer_width"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        app:layout = "@layout/fragment_navigation_drawer"
+        tools:layout = "@layout/fragment_navigation_drawer"
+        />
+
+</android.support.v4.widget.DrawerLayout>

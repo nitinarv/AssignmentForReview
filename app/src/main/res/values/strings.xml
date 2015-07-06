@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">TrueCaller Sample</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="request_1_button">Get 10th Char</string>
+    <string name="request_1_text">The 10th character is</string>
+    <string name="request_2_button">Get all 10th successive characters</string>
+    <string name="request_2_text">All 10th successive elements are follows</string>
+    <string name="request_3_button">Count of all successive elements are as follows</string>
+    <string name="request_3_text">Word count is below</string>
+    <string name="request_all_tasks">Execute All Tasks</string>
+    <string name="result_expceted_here">Result Expected Here</string>
+
+    <string name="drawer_open">Open</string>
+    <string name="drawer_close">Close</string>
+
+    <string name="nav_tenth_element">The 10th Char Results</string>
+    <string name="nav_all_tenth_element">All 10th Chars Results</string>
+    <string name="nav_all_word_counts">Split Word Count Results</string>
+    <string name="about_me">Made By Nitinraj Arvind</string>
+
+    <!-- navigation drawer item labels-->
+    <string-array name="nav_drawer_labels">
+        <item>@string/nav_tenth_element</item>
+        <item>@string/nav_all_tenth_element</item>
+        <item>@string/nav_all_word_counts</item>
+
+    </string-array>
+
+</resources>
