@@ -15,6 +15,7 @@ import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -49,6 +50,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
     private Toolbar mToolbar;
     private DrawerLayout mDrawerLayout;
     private FragmentDrawer mFragmentDrawer;
+    private List<TruecallerTestTask> runningTasks;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        initAllTasks();
+        runningTasks = new ArrayList<TruecallerTestTask>();
 
         request_button = (Button) findViewById(R.id.request_button);
 
@@ -86,6 +88,12 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         request_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                request_button.setEnabled(false);
+
+                resetProgressBars();
+                initAllTasks();
+                resetResultFields();
+
                 firstTenthElement.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                 allTenthElements.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                 wordCountResult.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
@@ -105,11 +113,16 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
             @Override
             public void onProgressStarted() {
                 request_1_result_details.setText("onProgressStarted");
+                runningTasks.add(firstTenthElement);
+
             }
 
             @Override
             public void onProgressEnded() {
                 request_1_result_details.setText("onProgressEnded");
+                runningTasks.remove(firstTenthElement);
+                if(runningTasks.isEmpty())
+                    request_button.setEnabled(true);
             }
 
             @Override
@@ -150,11 +163,15 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
             @Override
             public void onProgressStarted() {
                 request_2_result_details.setText("onProgressStarted");
+                runningTasks.add(allTenthElements);
             }
 
             @Override
             public void onProgressEnded() {
                 request_2_result_details.setText("onProgressEnded");
+                runningTasks.remove(allTenthElements);
+                if(runningTasks.isEmpty())
+                    request_button.setEnabled(true);
             }
 
             @Override
@@ -197,11 +214,15 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
             @Override
             public void onProgressStarted() {
                 request_3_result_details.setText("onProgressStarted");
+                runningTasks.add(wordCountResult);
             }
 
             @Override
             public void onProgressEnded() {
                 request_3_result_details.setText("onProgressEnded");
+                runningTasks.remove(wordCountResult);
+                if(runningTasks.isEmpty())
+                    request_button.setEnabled(true);
             }
 
             @Override
@@ -231,6 +252,21 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                 request_3_result_details.setText("onAllRepeatedWordWithCount: \'" + wordCount+"\'");
             }
         });
+    }
+
+    public void resetProgressBars(){
+        request_progressBar1.setProgress(0);
+        request_progressBar1.setSecondaryProgress(0 + 5);
+        request_progressBar2.setProgress(0);
+        request_progressBar2.setSecondaryProgress(0 + 5);
+        request_progressBar3.setProgress(0);
+        request_progressBar3.setSecondaryProgress(0 + 5);
+    }
+
+    public void resetResultFields(){
+        request_1_result_details.setText(getResources().getString(R.string.request_1_text));
+        request_2_result_details.setText(getResources().getString(R.string.request_2_text));
+        request_3_result_details.setText(getResources().getString(R.string.request_3_text));
     }
 
     @Override
