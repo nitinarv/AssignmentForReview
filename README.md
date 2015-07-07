@@ -1,11 +1,11 @@
 # AssignmentForReview
-Assignment for Review
 
 The assignment requires that I hit a webpage and display the following
 
 1. Get the first 10th character in the page. 
 2. Get ever 10th character that occurs in the page and put it into a data structure of some kind. Like an ArrayList for Character .
 3. Split the contents of the entire page on the basis of whitespaces and count their occurences. And hold that information in a data structure of somekind, Like a HashMap for a key value of String and Integer.
+4. And be able to search for a string among the different words we have and tell the user the number of times it has been repeated.
 
 That is the basic gist of what was expected. 
 
@@ -21,4 +21,4 @@ The following are the details of what other things were implemented.
 8. Wrote a extended class of the AsyncTask class to do the 'getting' of the page and then processing of the string on the basis of what we want.
 9. Wrote a callback that can be used for all the different types of use we have for the task.
 10. In the NavigationDrawer on click of the list items we scroll down automatically to that result on the main screen.
-
+11. Implmented searchview in the Toolbar. Implemented a workaround to make it show the suggestions from the list
