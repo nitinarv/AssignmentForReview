@@ -19,6 +19,7 @@
     <string name="nav_all_tenth_element">All 10th Chars Results</string>
     <string name="nav_all_word_counts">Split Word Count Results</string>
     <string name="about_me">Made By Nitinraj Arvind</string>
+    <string name="action_search">Search for word value</string>
 
     <!-- navigation drawer item labels-->
     <string-array name="nav_drawer_labels">

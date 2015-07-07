@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 import res.truecaller.sample.com.truecallersample.model.Operation;
 import res.truecaller.sample.com.truecallersample.model.ResponseDetails;
@@ -60,6 +61,8 @@ public class TruecallerTestTask extends AsyncTask<Void,Object,TaskResult> {
                         publishProgress(new Integer(progressCount+=50));
                         Character nthItem = responseString.charAt(indexOfInterest-1);
                         taskResult.setFirstTenthElement(nthItem);
+                        publishProgress(new Integer(progressCount+=40));
+                        taskResult.setFirstTenthElementString(nthItem.toString());
                         publishProgress(new Integer(progressCount+=45));
                         return taskResult;
                     }
@@ -74,7 +77,18 @@ public class TruecallerTestTask extends AsyncTask<Void,Object,TaskResult> {
                             Character charAtIndex = responseString.charAt(i);
                             listOfCharacters.add(charAtIndex);
                         }
-                        publishProgress(new Integer(progressCount += 70));
+
+                        publishProgress(new Integer(progressCount += 35));
+                        StringBuilder stringBuilder = new StringBuilder();
+                        //convert to string
+                        for(Character entry: listOfCharacters){
+                            stringBuilder.append(entry);
+                            stringBuilder.append(",\n");
+                        }
+
+                        taskResult.setAllTenthElementString(stringBuilder.toString());
+
+                        publishProgress(new Integer(progressCount += 35));
                         taskResult.setAllTenthElement(listOfCharacters);
 
                         return taskResult;
@@ -97,7 +111,18 @@ public class TruecallerTestTask extends AsyncTask<Void,Object,TaskResult> {
                                 wordCountMap.put(wordItem, (wordCountMap.get(wordItem.toLowerCase())+1));
                             }
                         }
-                        publishProgress(new Integer(progressCount += 80));
+                        publishProgress(new Integer(progressCount += 40));
+                        //convert to string
+                        Set<String> mapkeys = wordCountMap.keySet();
+                        StringBuilder stringBuilder = new StringBuilder();
+                        for(String entry: mapkeys){
+                            stringBuilder.append("key: "+entry);
+                            stringBuilder.append(", value(count): "+wordCountMap.get(entry));
+                            stringBuilder.append("\n");
+                        }
+
+                        taskResult.setUniqueWordCountString(stringBuilder.toString());
+                        publishProgress(new Integer(progressCount += 40));
                         taskResult.setUniqueWordCount(wordCountMap);
                         return taskResult;
                     }
@@ -122,23 +147,26 @@ public class TruecallerTestTask extends AsyncTask<Void,Object,TaskResult> {
                 case FIRST_TENTH_ELEMENT: {
                     if (result.getFirstTenthElement() != null) {
                         operationCallback.onTenthChar(result.getFirstTenthElement());
+                        operationCallback.useStringResult(result.getFirstTenthElementString());
                     }
                 }
                 break;
                 case ALL_TENTH_ELEMENT:
                     if (result.getAllTenthElement() != null) {
                         operationCallback.onAllTenthCharsList(result.getAllTenthElement());
+                        operationCallback.useStringResult(result.getAllTenthElementString());
                     }
                     break;
                 case WORD_GET:
                     if (result.getUniqueWordCount() != null) {
                         operationCallback.onAllRepeatedWordWithCount(result.getUniqueWordCount());
+                        operationCallback.useStringResult(result.getUniqueWordCountString());
                     }
                     break;
             }
         }
     }
-
+//
     @Override
     protected void onProgressUpdate(Object... values) {
         super.onProgressUpdate(values);

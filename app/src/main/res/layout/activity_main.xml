@@ -53,6 +53,7 @@
                 android:background="@color/resultBackground"
                 android:textStyle="bold"
                 android:textColor="@color/resultTextColor"
+                android:paddingLeft="24dp"
                 android:text="@string/result_expceted_here"/>
 
 
@@ -84,6 +85,7 @@
                 android:background="@color/resultBackground"
                 android:textStyle="bold"
                 android:textColor="@color/resultTextColor"
+                android:paddingLeft="24dp"
                 android:text="@string/result_expceted_here"/>
 
 
@@ -115,6 +117,7 @@
                 android:background="@color/resultBackground"
                 android:textStyle="bold"
                 android:textColor="@color/resultTextColor"
+                android:paddingLeft="24dp"
                 android:text="@string/result_expceted_here"/>
 
         </LinearLayout>
