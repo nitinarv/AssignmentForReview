@@ -22,3 +22,5 @@ The following are the details of what other things were implemented.
 9. Wrote a callback that can be used for all the different types of use we have for the task.
 10. In the NavigationDrawer on click of the list items we scroll down automatically to that result on the main screen.
 11. Implmented searchview in the Toolbar. Implemented a workaround to make it show the suggestions from the list
+12. Wrote a class to hold the response. I will have to add another pojo for handling holding the rest response and process it.
+

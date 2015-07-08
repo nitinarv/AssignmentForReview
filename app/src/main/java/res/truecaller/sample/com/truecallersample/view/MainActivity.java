@@ -179,6 +179,9 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         return true;
     }
 
+    /**
+     * Need to improve the search view implementation.
+     * */
     private void loadData(Menu menu, String query) {
         // Cursor
         String[] columns = new String[] { "_id", "text" };
@@ -208,6 +211,9 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         return super.onPrepareOptionsMenu(menu);
     }
 
+    /**
+     * initing all the task objects for all the tasks.
+     * */
     public void initAllTasks(){
         firstTenthElement = new TruecallerTestTask(this, Operation.FIRST_TENTH_ELEMENT, new OperationCallback() {
             @Override
@@ -360,6 +366,9 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         });
     }
 
+    /**
+     * Visual reset of the view progress bars
+     * */
     public void resetProgressBars(){
         request_progressBar1.setProgress(0);
         request_progressBar1.setSecondaryProgress(0 + 5);
@@ -369,6 +378,9 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         request_progressBar3.setSecondaryProgress(0 + 5);
     }
 
+    /**
+     * Visual reset of the fields
+     * */
     public void resetResultFields(){
         request_1_result_details.setText(getResources().getString(R.string.request_1_text));
         request_2_result_details.setText(getResources().getString(R.string.request_2_text));

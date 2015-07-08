@@ -97,7 +97,7 @@ public class TruecallerTestTask extends AsyncTask<Void,Object,TaskResult> {
                 case WORD_GET:
                     if(responseString!=null){
                         publishProgress(new Integer(progressCount += 5));
-                        String[] splited = responseString.split("\\s");
+                        String[] splited = responseString.split("\\s+");
                         publishProgress(new Integer(progressCount += 5));
                         HashMap<String, Integer> wordCountMap = null;
                         publishProgress(new Integer(progressCount += 5));
