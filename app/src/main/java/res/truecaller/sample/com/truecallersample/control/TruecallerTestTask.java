@@ -51,51 +51,54 @@ public class TruecallerTestTask extends AsyncTask<Void,Object,TaskResult> {
             ResponseDetails responseDetails = jobs.getWebPage(context);
             String responseString = responseDetails.getReponseString();
 
-            if(operationCallback instanceof First10thResultCallback){
-                if(responseString!=null) {
-                    Character nthItem = responseString.charAt(indexOfInterest-1);
+            if(responseString!=null) {
+                if (operationCallback instanceof First10thResultCallback) {
+
+                    Character nthItem = responseString.charAt(indexOfInterest - 1);
 
                     taskResult.setFirstTenthElement(nthItem);
                     taskResult.setFirstTenthElementString(nthItem.toString());
                     return taskResult;
-                }
-            }else if(operationCallback instanceof All10thResultCallback){
-                if(responseString!=null) {
+
+                } else if (operationCallback instanceof All10thResultCallback) {
+
                     List<Character> listOfCharacters = new ArrayList<Character>();
 
                     StringBuilder stringBuilder = new StringBuilder();
-                    for(int i=(indexOfInterest-1); i < responseString.length(); i = i + indexOfInterest){
+                    for (int i = (indexOfInterest - 1); i < responseString.length(); i = i + indexOfInterest) {
                         Character charAtIndex = responseString.charAt(i);
                         listOfCharacters.add(charAtIndex);
-                        stringBuilder.append(charAtIndex+",\n");
+                        stringBuilder.append(charAtIndex + ",\n");
                     }
 
                     taskResult.setAllTenthElementString(stringBuilder.toString());
                     taskResult.setAllTenthElement(listOfCharacters);
 
                     return taskResult;
-                }
-            }else if(operationCallback instanceof RepeatedWordCountCallback){
-                if(responseString!=null){
+
+                } else if (operationCallback instanceof RepeatedWordCountCallback) {
+
                     String[] splited = responseString.split("\\s+");
-                    HashMap<String, Integer> wordCountMap = new HashMap<String, Integer>();;
+                    HashMap<String, Integer> wordCountMap = new HashMap<String, Integer>();
+                    ;
                     StringBuilder stringBuilder = new StringBuilder();
-                    for(String wordItem: splited){
-                        if(!wordCountMap.containsKey(wordItem.toLowerCase())){
+                    for (String wordItem : splited) {
+                        if (!wordCountMap.containsKey(wordItem.toLowerCase())) {
                             wordCountMap.put(wordItem.toLowerCase(), 1);
-                        }else{
-                            wordCountMap.put(wordItem, (wordCountMap.get(wordItem.toLowerCase())+1));
+                        } else {
+                            wordCountMap.put(wordItem, (wordCountMap.get(wordItem.toLowerCase()) + 1));
                         }
                     }
                     //convert to string
                     Set<String> mapkeys = wordCountMap.keySet();
-                    for(String entry: mapkeys){
-                        stringBuilder.append("key: "+entry+", value(count): "+wordCountMap.get(entry)+"\n");
+                    for (String entry : mapkeys) {
+                        stringBuilder.append("key: " + entry + ", value(count): " + wordCountMap.get(entry) + "\n");
                     }
 
                     taskResult.setUniqueWordCountString(stringBuilder.toString());
                     taskResult.setUniqueWordCount(wordCountMap);
                     return taskResult;
+
                 }
             }
         }catch (Exception e){
