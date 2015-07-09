@@ -48,75 +48,52 @@ public class TruecallerTestTask extends AsyncTask<Void,Object,TaskResult> {
     protected TaskResult doInBackground(Void... params) {
 
         try {
-            publishProgress(new Integer(progressCount+=5));
             ResponseDetails responseDetails = jobs.getWebPage(context);
             String responseString = responseDetails.getReponseString();
 
             if(operationCallback instanceof First10thResultCallback){
                 if(responseString!=null) {
-                    publishProgress(new Integer(progressCount+=50));
                     Character nthItem = responseString.charAt(indexOfInterest-1);
+
                     taskResult.setFirstTenthElement(nthItem);
-                    publishProgress(new Integer(progressCount+=40));
                     taskResult.setFirstTenthElementString(nthItem.toString());
-                    publishProgress(new Integer(progressCount+=45));
                     return taskResult;
                 }
             }else if(operationCallback instanceof All10thResultCallback){
                 if(responseString!=null) {
-                    List<Character> listOfCharacters = null;
-                    publishProgress(new Integer(progressCount+=25));
+                    List<Character> listOfCharacters = new ArrayList<Character>();
+
+                    StringBuilder stringBuilder = new StringBuilder();
                     for(int i=(indexOfInterest-1); i < responseString.length(); i = i + indexOfInterest){
-                        if(listOfCharacters==null)
-                            listOfCharacters = new ArrayList<Character>();
                         Character charAtIndex = responseString.charAt(i);
                         listOfCharacters.add(charAtIndex);
-                    }
-
-                    publishProgress(new Integer(progressCount += 35));
-                    StringBuilder stringBuilder = new StringBuilder();
-                    //convert to string
-                    for(Character entry: listOfCharacters){
-                        stringBuilder.append(entry);
-                        stringBuilder.append(",\n");
+                        stringBuilder.append(charAtIndex+",\n");
                     }
 
                     taskResult.setAllTenthElementString(stringBuilder.toString());
-
-                    publishProgress(new Integer(progressCount += 35));
                     taskResult.setAllTenthElement(listOfCharacters);
 
                     return taskResult;
                 }
             }else if(operationCallback instanceof RepeatedWordCountCallback){
                 if(responseString!=null){
-                    publishProgress(new Integer(progressCount += 5));
                     String[] splited = responseString.split("\\s+");
-                    publishProgress(new Integer(progressCount += 5));
-                    HashMap<String, Integer> wordCountMap = null;
-                    publishProgress(new Integer(progressCount += 5));
+                    HashMap<String, Integer> wordCountMap = new HashMap<String, Integer>();;
+                    StringBuilder stringBuilder = new StringBuilder();
                     for(String wordItem: splited){
-                        if(wordCountMap==null)
-                            wordCountMap = new HashMap<String, Integer>();
-
                         if(!wordCountMap.containsKey(wordItem.toLowerCase())){
                             wordCountMap.put(wordItem.toLowerCase(), 1);
                         }else{
                             wordCountMap.put(wordItem, (wordCountMap.get(wordItem.toLowerCase())+1));
                         }
                     }
-                    publishProgress(new Integer(progressCount += 40));
                     //convert to string
                     Set<String> mapkeys = wordCountMap.keySet();
-                    StringBuilder stringBuilder = new StringBuilder();
                     for(String entry: mapkeys){
-                        stringBuilder.append("key: "+entry);
-                        stringBuilder.append(", value(count): "+wordCountMap.get(entry));
-                        stringBuilder.append("\n");
+                        stringBuilder.append("key: "+entry+", value(count): "+wordCountMap.get(entry)+"\n");
                     }
 
                     taskResult.setUniqueWordCountString(stringBuilder.toString());
-                    publishProgress(new Integer(progressCount += 40));
                     taskResult.setUniqueWordCount(wordCountMap);
                     return taskResult;
                 }
