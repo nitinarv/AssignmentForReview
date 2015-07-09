@@ -7,17 +7,14 @@ import android.database.MatrixCursor;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.DrawerLayout;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,12 +25,13 @@ import java.util.HashMap;
 import java.util.List;
 
 import res.truecaller.sample.com.truecallersample.R;
-import res.truecaller.sample.com.truecallersample.model.Operation;
-import res.truecaller.sample.com.truecallersample.control.OperationCallback;
+import res.truecaller.sample.com.truecallersample.control.All10thResultCallback;
+import res.truecaller.sample.com.truecallersample.control.First10thResultCallback;
+import res.truecaller.sample.com.truecallersample.control.RepeatedWordCountCallback;
 import res.truecaller.sample.com.truecallersample.control.TruecallerTestTask;
 
 
-public class MainActivity extends AppCompatActivity implements FragmentDrawer.FragmentDrawerListener{
+public class MainActivity extends AppCompatActivity {
 
     Button request_button;
 
@@ -41,23 +39,15 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
     TruecallerTestTask allTenthElements;
     TruecallerTestTask wordCountResult;
 
-    TextView request_1_result;
-    ProgressBar request_progressBar1;
     TextView request_1_result_details;
 
-    TextView request_2_result;
-    ProgressBar request_progressBar2;
     TextView request_2_result_details;
 
-    TextView request_3_result;
-    ProgressBar request_progressBar3;
     TextView request_3_result_details;
 
     ScrollView content_scrollview;
 
     private Toolbar mToolbar;
-    private DrawerLayout mDrawerLayout;
-    private FragmentDrawer mFragmentDrawer;
     private List<TruecallerTestTask> runningTasks;
 
 
@@ -78,31 +68,20 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         setContentView(R.layout.activity_main);
 
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        mDrawerLayout  =  (DrawerLayout) findViewById(R.id.drawer_layout);
 
         content_scrollview = (ScrollView) findViewById(R.id.content_scrollview);
 
-        mFragmentDrawer = (FragmentDrawer) getSupportFragmentManager().findFragmentById(R.id.fragment_navigation_drawer);
-        mFragmentDrawer.setUp(R.id.fragment_navigation_drawer, mDrawerLayout, mToolbar);
-        mFragmentDrawer.setDrawerListener(this);
-
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
 
         runningTasks = new ArrayList<TruecallerTestTask>();
 
         request_button = (Button) findViewById(R.id.request_button);
 
-        request_1_result = (TextView) findViewById(R.id.request_1_result);
-        request_progressBar1 = (ProgressBar) findViewById(R.id.request_progressBar1);
         request_1_result_details = (TextView) findViewById(R.id.request_1_result_details);
 
-        request_2_result = (TextView) findViewById(R.id.request_2_result);
-        request_progressBar2 = (ProgressBar) findViewById(R.id.request_progressBar2);
         request_2_result_details = (TextView) findViewById(R.id.request_2_result_details);
 
-        request_3_result = (TextView) findViewById(R.id.request_3_result);
-        request_progressBar3 = (ProgressBar) findViewById(R.id.request_progressBar3);
         request_3_result_details = (TextView) findViewById(R.id.request_3_result_details);
 
         request_button.setOnClickListener(new View.OnClickListener() {
@@ -215,7 +194,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
      * initing all the task objects for all the tasks.
      * */
     public void initAllTasks(){
-        firstTenthElement = new TruecallerTestTask(this, Operation.FIRST_TENTH_ELEMENT, new OperationCallback() {
+        firstTenthElement = new TruecallerTestTask(this, new First10thResultCallback() {
             @Override
             public void processException(Exception e) {
                 request_1_result_details.setText("processException: " + e.getMessage());
@@ -243,8 +222,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
 
             @Override
             public void onProgressUpdated(int progressPercent) {
-                request_progressBar1.setProgress(progressPercent);
-                request_progressBar1.setSecondaryProgress(progressPercent + 5);
+                request_1_result_details.setText("" + progressPercent+"/100");
             }
 
             @Override
@@ -259,13 +237,12 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
 
             @Override
             public void onTenthChar(char ch) {
-                super.onTenthChar(ch);
 
             }
         });
 
 
-        allTenthElements = new TruecallerTestTask(this, Operation.ALL_TENTH_ELEMENT, new OperationCallback() {
+        allTenthElements = new TruecallerTestTask(this, new All10thResultCallback() {
             @Override
             public void processException(Exception e) {
                 request_2_result_details.setText("processException: " + e.getMessage());
@@ -292,9 +269,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
 
             @Override
             public void onProgressUpdated(int progressPercent) {
-                request_progressBar2.setProgress(progressPercent);
-                request_progressBar2.setSecondaryProgress(progressPercent + 5);
-
+                request_2_result_details.setText("" + progressPercent+"/100");
             }
 
             @Override
@@ -309,13 +284,13 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
 
             @Override
             public void onAllTenthCharsList(List<Character> ch) {
-                super.onAllTenthCharsList(ch);
+
             }
 
         });
 
 
-        wordCountResult = new TruecallerTestTask(this, Operation.WORD_GET, new OperationCallback() {
+        wordCountResult = new TruecallerTestTask(this, new RepeatedWordCountCallback() {
             @Override
             public void processException(Exception e) {
                 request_3_result_details.setText("processException: " + e.getMessage());
@@ -342,8 +317,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
 
             @Override
             public void onProgressUpdated(int progressPercent) {
-                request_progressBar3.setProgress(progressPercent);
-                request_progressBar3.setSecondaryProgress(progressPercent + 5);
+                request_3_result_details.setText("" + progressPercent+"/100");
             }
 
             @Override
@@ -359,7 +333,6 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
             @Override
             public void onAllRepeatedWordWithCount(HashMap<String, Integer> wordCount) {
                 wordMap = wordCount;
-                super.onAllRepeatedWordWithCount(wordCount);
                 wordList = Arrays.asList(wordCount.keySet().toArray(new String[wordCount.keySet().size()]));
 
             }
@@ -370,12 +343,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
      * Visual reset of the view progress bars
      * */
     public void resetProgressBars(){
-        request_progressBar1.setProgress(0);
-        request_progressBar1.setSecondaryProgress(0 + 5);
-        request_progressBar2.setProgress(0);
-        request_progressBar2.setSecondaryProgress(0 + 5);
-        request_progressBar3.setProgress(0);
-        request_progressBar3.setSecondaryProgress(0 + 5);
+
     }
 
     /**
@@ -395,15 +363,15 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
             case R.id.action_search:
 
                 return true;
-            case android.R.id.home:
-                if(mDrawerLayout!=null) {
-                    if (!mDrawerLayout.isDrawerOpen(Gravity.LEFT)) {
-                        mDrawerLayout.openDrawer(Gravity.LEFT);
-                    } else {
-                        mDrawerLayout.closeDrawer(Gravity.LEFT);
-                    }
-                }
-                return true;
+            case R.id.menu_jump_result1:
+                displayView(0);
+                break;
+            case R.id.menu_jump_result2:
+                displayView(1);
+                break;
+            case R.id.menu_jump_result3:
+                displayView(2);
+                break;
             default:
                 break;
         }
@@ -419,7 +387,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                 new Handler().post(new Runnable() {
                     @Override
                     public void run() {
-                        content_scrollview.scrollTo(0, request_1_result.getTop());
+                        content_scrollview.scrollTo(0, request_1_result_details.getTop());
                     }
                 });
                 break;
@@ -427,7 +395,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                 new Handler().post(new Runnable() {
                     @Override
                     public void run() {
-                        content_scrollview.scrollTo(0, request_2_result.getTop());
+                        content_scrollview.scrollTo(0, request_2_result_details.getTop());
                     }
                 });
                 break;
@@ -435,7 +403,7 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
                 new Handler().post(new Runnable() {
                     @Override
                     public void run() {
-                        content_scrollview.scrollTo(0, request_3_result.getTop());
+                        content_scrollview.scrollTo(0, request_3_result_details.getTop());
                     }
                 });
                 break;
@@ -444,8 +412,4 @@ public class MainActivity extends AppCompatActivity implements FragmentDrawer.Fr
         }
     }
 
-    @Override
-    public void onDrawerItemSelected(View view, int position) {
-        displayView(position);
-    }
 }

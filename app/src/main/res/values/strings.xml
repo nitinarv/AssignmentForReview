@@ -20,6 +20,9 @@
     <string name="nav_all_word_counts">Split Word Count Results</string>
     <string name="about_me">Made By Nitinraj Arvind</string>
     <string name="action_search">Search for word value</string>
+    <string name="first_10_result">first10thresult</string>
+    <string name="all_10_result">all 10th values</string>
+    <string name="word_count">wordcount</string>
 
     <!-- navigation drawer item labels-->
     <string-array name="nav_drawer_labels">
