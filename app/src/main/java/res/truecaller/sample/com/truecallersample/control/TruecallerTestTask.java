@@ -86,7 +86,7 @@ public class TruecallerTestTask extends AsyncTask<Void,Object,TaskResult> {
                         if (!wordCountMap.containsKey(wordItem.toLowerCase())) {
                             wordCountMap.put(wordItem.toLowerCase(), 1);
                         } else {
-                            wordCountMap.put(wordItem, (wordCountMap.get(wordItem.toLowerCase()) + 1));
+                            wordCountMap.put(wordItem.toLowerCase(), (wordCountMap.get(wordItem.toLowerCase()) + 1));
                         }
                     }
                     //convert to string
