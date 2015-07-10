@@ -1,0 +1,61 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="res.truecaller.sample.com.truecallersample.view.TaskFragment">
+
+    <ScrollView
+        android:id="@+id/content_scrollview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+
+            <TextView
+                android:id="@+id/request_1_result_details"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/resultBackground"
+                android:textStyle="bold"
+                android:textColor="@color/resultTextColor"
+                android:paddingLeft="24dp"
+                android:text="@string/result_expceted_here"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+                android:background="@android:color/darker_gray"/>
+
+            <TextView
+                android:id="@+id/request_2_result_details"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/resultBackground"
+                android:textStyle="bold"
+                android:textColor="@color/resultTextColor"
+                android:paddingLeft="24dp"
+                android:text="@string/result_expceted_here"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+                android:background="@android:color/darker_gray"/>
+
+            <TextView
+                android:id="@+id/request_3_result_details"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/resultBackground"
+                android:textStyle="bold"
+                android:textColor="@color/resultTextColor"
+                android:paddingLeft="24dp"
+                android:text="@string/result_expceted_here"/>
+
+        </LinearLayout>
+    </ScrollView>
+
+</FrameLayout>

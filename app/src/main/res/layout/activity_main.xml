@@ -15,58 +15,11 @@
         android:textAllCaps="false"
         android:text="@string/request_all_tasks"
         />
-    <ScrollView
-        android:id="@+id/content_scrollview"
+    <fragment
+        android:name="res.truecaller.sample.com.truecallersample.view.TaskFragment"
+        android:id="@+id/tasks_fragment"
+        android:layout_weight="1"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-
-
-            <TextView
-                android:id="@+id/request_1_result_details"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/resultBackground"
-                android:textStyle="bold"
-                android:textColor="@color/resultTextColor"
-                android:paddingLeft="24dp"
-                android:text="@string/result_expceted_here"/>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="3dp"
-                android:background="@android:color/darker_gray"/>
-
-            <TextView
-                android:id="@+id/request_2_result_details"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/resultBackground"
-                android:textStyle="bold"
-                android:textColor="@color/resultTextColor"
-                android:paddingLeft="24dp"
-                android:text="@string/result_expceted_here"/>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="3dp"
-                android:background="@android:color/darker_gray"/>
-
-            <TextView
-                android:id="@+id/request_3_result_details"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/resultBackground"
-                android:textStyle="bold"
-                android:textColor="@color/resultTextColor"
-                android:paddingLeft="24dp"
-                android:text="@string/result_expceted_here"/>
-
-        </LinearLayout>
-    </ScrollView>
 </LinearLayout>
