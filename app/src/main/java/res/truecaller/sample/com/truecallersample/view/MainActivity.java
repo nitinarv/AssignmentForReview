@@ -16,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -42,6 +43,7 @@ public class MainActivity extends AppCompatActivity implements TaskFragment.Task
     private ExampleAdapter searchableAdapter;
     private MenuItem searchItem;
     private TaskFragment taskFragment;
+    private FrameLayout frameLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,20 +53,20 @@ public class MainActivity extends AppCompatActivity implements TaskFragment.Task
         setSupportActionBar(mToolbar);
         request_button = (Button) findViewById(R.id.request_button);
 
-
         taskFragment = (TaskFragment) getSupportFragmentManager().findFragmentByTag(TaskFragment.TAG_TASK_FRAGMENT);
+        frameLayout = (FrameLayout) findViewById(R.id.tasks_fragment);
 
-
-        if(taskFragment==null) {
-            taskFragment = new TaskFragment();
-
-            if (savedInstanceState == null) {
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.tasks_fragment, taskFragment, TaskFragment.TAG_TASK_FRAGMENT)
-                        .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.bounce_interpolator)
-                        .commit();
+        if (savedInstanceState == null) {
+            if(taskFragment==null) {
+                taskFragment = new TaskFragment();
             }
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.tasks_fragment, taskFragment, TaskFragment.TAG_TASK_FRAGMENT)
+                    .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.bounce_interpolator)
+                    .commit();
+        }else{
+            taskFragment = (TaskFragment) getSupportFragmentManager().findFragmentByTag(TaskFragment.TAG_TASK_FRAGMENT);
         }
 
         request_button.setOnClickListener(new View.OnClickListener() {

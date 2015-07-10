@@ -36,6 +36,8 @@ public class TaskFragment extends Fragment {
     TextView request_3_result_details;
     ScrollView content_scrollview;
 
+    MainActivity activity;
+
     private List<TruecallerTestTask> runningTasks;
 
     public static final String TAG_TASK_FRAGMENT = "res.truecaller.sample.com.truecallersample.view.TaskFragment";
@@ -52,7 +54,8 @@ public class TaskFragment extends Fragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         setRetainInstance(true);
-        taskCallbacks = (MainActivity) getActivity();
+        activity = getActivity();
+        taskCallbacks = (MainActivity) activity;
 
     }
 
@@ -65,13 +68,19 @@ public class TaskFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_task, container, false);
-        content_scrollview = (ScrollView) view.findViewById(R.id.content_scrollview);
-        request_1_result_details = (TextView) view.findViewById(R.id.request_1_result_details);
-        request_2_result_details = (TextView) view.findViewById(R.id.request_2_result_details);
-        request_3_result_details = (TextView) view.findViewById(R.id.request_3_result_details);
+        View view;
+//        if (container != null) {
+            view = inflater.inflate(R.layout.fragment_task, container, false);
+            content_scrollview = (ScrollView) view.findViewById(R.id.content_scrollview);
+            request_1_result_details = (TextView) view.findViewById(R.id.request_1_result_details);
+            request_2_result_details = (TextView) view.findViewById(R.id.request_2_result_details);
+            request_3_result_details = (TextView) view.findViewById(R.id.request_3_result_details);
 
-        runningTasks = new ArrayList<TruecallerTestTask>();
+            runningTasks = new ArrayList<TruecallerTestTask>();
+
+//        }else{
+//            view = super.onCreateView(inflater, container, savedInstanceState);
+//        }
 
         return view;
     }
@@ -80,13 +89,16 @@ public class TaskFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        if(runningTasks.isEmpty())
+        setRetainInstance(true);
+
+        if(runningTasks.isEmpty() && taskCallbacks!=null)
             taskCallbacks.enableButton();
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
+        activity = null;
         taskCallbacks = null;
     }
 
@@ -119,7 +131,7 @@ public class TaskFragment extends Fragment {
             public void onProgressEnded() {
                 request_1_result_details.setText("onProgressEnded");
                 runningTasks.remove(firstTenthElement);
-                if(runningTasks.isEmpty())
+                if(runningTasks.isEmpty() && taskCallbacks!=null)
                     taskCallbacks.enableButton();
             }
 
@@ -166,7 +178,7 @@ public class TaskFragment extends Fragment {
             public void onProgressEnded() {
                 request_2_result_details.setText("onProgressEnded");
                 runningTasks.remove(allTenthElements);
-                if(runningTasks.isEmpty())
+                if(runningTasks.isEmpty() && taskCallbacks!=null)
                     taskCallbacks.enableButton();
             }
 
@@ -214,7 +226,7 @@ public class TaskFragment extends Fragment {
             public void onProgressEnded() {
                 request_3_result_details.setText("onProgressEnded");
                 runningTasks.remove(wordCountResult);
-                if(runningTasks.isEmpty())
+                if(runningTasks.isEmpty() && taskCallbacks!=null)
                     taskCallbacks.enableButton();
             }
 
@@ -240,7 +252,8 @@ public class TaskFragment extends Fragment {
 
             @Override
             public void onAllRepeatedWordWithCount(HashMap<String, Integer> wordCount) {
-                taskCallbacks.setWordData(wordCount);
+                if(taskCallbacks!=null)
+                    taskCallbacks.setWordData(wordCount);
             }
         });
     }

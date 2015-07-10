@@ -15,8 +15,7 @@
         android:textAllCaps="false"
         android:text="@string/request_all_tasks"
         />
-    <fragment
-        android:name="res.truecaller.sample.com.truecallersample.view.TaskFragment"
+    <FrameLayout
         android:id="@+id/tasks_fragment"
         android:layout_weight="1"
         android:layout_width="match_parent"
