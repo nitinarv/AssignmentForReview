@@ -299,19 +299,25 @@ public class TaskFragment extends Fragment {
      * */
     private void resetResultFields(){
 
-        if(firstTenthElementTaskResult!=null && firstTenthElementTaskResult.getFirstTenthElementString()!=null && !firstTenthElementTaskResult.getFirstTenthElementString().isEmpty()){
+        if(firstTenthElementTaskResult!=null
+                && firstTenthElementTaskResult.getFirstTenthElementString()!=null
+                && !firstTenthElementTaskResult.getFirstTenthElementString().isEmpty()){
             request_1_result_details.setText("onTenthChar: \'" + firstTenthElementTaskResult.getFirstTenthElementString() + "\'");
         }else{
             request_1_result_details.setText(getResources().getString(R.string.request_1_text));
         }
 
-        if(allTenthElementsTaskResult!=null && allTenthElementsTaskResult.getAllTenthElementString()!=null && !allTenthElementsTaskResult.getAllTenthElementString().isEmpty()){
+        if(allTenthElementsTaskResult!=null
+                && allTenthElementsTaskResult.getAllTenthElementString()!=null
+                && !allTenthElementsTaskResult.getAllTenthElementString().isEmpty()){
             request_2_result_details.setText("onAllTenthCharsList: \'" + allTenthElementsTaskResult.getAllTenthElementString() + "\'");
         }else{
             request_2_result_details.setText(getResources().getString(R.string.request_2_text));
         }
 
-        if(wordCountResultTaskResult!=null && wordCountResultTaskResult.getUniqueWordCountString()!=null && !wordCountResultTaskResult.getUniqueWordCountString().isEmpty()){
+        if(wordCountResultTaskResult!=null
+                && wordCountResultTaskResult.getUniqueWordCountString()!=null
+                && !wordCountResultTaskResult.getUniqueWordCountString().isEmpty()){
             request_3_result_details.setText("onAllRepeatedWordWithCount: \'" + wordCountResultTaskResult.getUniqueWordCountString()+"\'");
         }else{
             request_3_result_details.setText(getResources().getString(R.string.request_3_text));
