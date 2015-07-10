@@ -24,12 +24,17 @@ import res.truecaller.sample.com.truecallersample.control.First10thResultCallbac
 import res.truecaller.sample.com.truecallersample.control.OperationCallback;
 import res.truecaller.sample.com.truecallersample.control.RepeatedWordCountCallback;
 import res.truecaller.sample.com.truecallersample.control.TruecallerTestTask;
+import res.truecaller.sample.com.truecallersample.model.TaskResult;
 
 public class TaskFragment extends Fragment {
 
     TruecallerTestTask firstTenthElement;
     TruecallerTestTask allTenthElements;
     TruecallerTestTask wordCountResult;
+
+    TaskResult firstTenthElementTaskResult = null;
+    TaskResult allTenthElementsTaskResult = null;
+    TaskResult wordCountResultTaskResult = null;
 
     TextView request_1_result_details;
     TextView request_2_result_details;
@@ -68,19 +73,13 @@ public class TaskFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view;
-//        if (container != null) {
-            view = inflater.inflate(R.layout.fragment_task, container, false);
-            content_scrollview = (ScrollView) view.findViewById(R.id.content_scrollview);
-            request_1_result_details = (TextView) view.findViewById(R.id.request_1_result_details);
-            request_2_result_details = (TextView) view.findViewById(R.id.request_2_result_details);
-            request_3_result_details = (TextView) view.findViewById(R.id.request_3_result_details);
+        View view = inflater.inflate(R.layout.fragment_task, container, false);
+        content_scrollview = (ScrollView) view.findViewById(R.id.content_scrollview);
+        request_1_result_details = (TextView) view.findViewById(R.id.request_1_result_details);
+        request_2_result_details = (TextView) view.findViewById(R.id.request_2_result_details);
+        request_3_result_details = (TextView) view.findViewById(R.id.request_3_result_details);
 
-            runningTasks = new ArrayList<TruecallerTestTask>();
-
-//        }else{
-//            view = super.onCreateView(inflater, container, savedInstanceState);
-//        }
+        runningTasks = new ArrayList<TruecallerTestTask>();
 
         return view;
     }
@@ -93,6 +92,8 @@ public class TaskFragment extends Fragment {
 
         if(runningTasks.isEmpty() && taskCallbacks!=null)
             taskCallbacks.enableButton();
+
+        resetView();
     }
 
     @Override
@@ -103,11 +104,16 @@ public class TaskFragment extends Fragment {
     }
 
     public void runAllTasks(){
+        resetView();
+        executeAllTasks();
+    }
+
+    public void resetView(){
         resetProgressBars();
         initAllTasks();
         resetResultFields();
-        executeAllTasks();
     }
+
 
 
     /**
@@ -156,6 +162,11 @@ public class TaskFragment extends Fragment {
             }
 
             @Override
+            public void storeTaskResult(TaskResult taskResult) {
+                firstTenthElementTaskResult = taskResult;
+            }
+
+            @Override
             public void onTenthChar(char ch) {
 
             }
@@ -200,6 +211,11 @@ public class TaskFragment extends Fragment {
             @Override
             public void useStringResult(String result) {
                 request_2_result_details.setText("onAllTenthCharsList: \'" + result + "\'");
+            }
+
+            @Override
+            public void storeTaskResult(TaskResult taskResult) {
+                allTenthElementsTaskResult = taskResult;
             }
 
             @Override
@@ -251,6 +267,11 @@ public class TaskFragment extends Fragment {
             }
 
             @Override
+            public void storeTaskResult(TaskResult taskResult) {
+                wordCountResultTaskResult = taskResult;
+            }
+
+            @Override
             public void onAllRepeatedWordWithCount(HashMap<String, Integer> wordCount) {
                 if(taskCallbacks!=null)
                     taskCallbacks.setWordData(wordCount);
@@ -277,9 +298,25 @@ public class TaskFragment extends Fragment {
      * Visual reset of the fields
      * */
     private void resetResultFields(){
-        request_1_result_details.setText(getResources().getString(R.string.request_1_text));
-        request_2_result_details.setText(getResources().getString(R.string.request_2_text));
-        request_3_result_details.setText(getResources().getString(R.string.request_3_text));
+
+        if(firstTenthElementTaskResult!=null && firstTenthElementTaskResult.getFirstTenthElementString()!=null && !firstTenthElementTaskResult.getFirstTenthElementString().isEmpty()){
+            request_1_result_details.setText("onTenthChar: \'" + firstTenthElementTaskResult.getFirstTenthElementString() + "\'");
+        }else{
+            request_1_result_details.setText(getResources().getString(R.string.request_1_text));
+        }
+
+        if(allTenthElementsTaskResult!=null && allTenthElementsTaskResult.getAllTenthElementString()!=null && !allTenthElementsTaskResult.getAllTenthElementString().isEmpty()){
+            request_2_result_details.setText("onAllTenthCharsList: \'" + allTenthElementsTaskResult.getAllTenthElementString() + "\'");
+        }else{
+            request_2_result_details.setText(getResources().getString(R.string.request_2_text));
+        }
+
+        if(wordCountResultTaskResult!=null && wordCountResultTaskResult.getUniqueWordCountString()!=null && !wordCountResultTaskResult.getUniqueWordCountString().isEmpty()){
+            request_3_result_details.setText("onAllRepeatedWordWithCount: \'" + wordCountResultTaskResult.getUniqueWordCountString()+"\'");
+        }else{
+            request_3_result_details.setText(getResources().getString(R.string.request_3_text));
+        }
+
     }
 
     public void displayView(int position){

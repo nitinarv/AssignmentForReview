@@ -67,6 +67,7 @@ public class MainActivity extends AppCompatActivity implements TaskFragment.Task
                     .commit();
         }else{
             taskFragment = (TaskFragment) getSupportFragmentManager().findFragmentByTag(TaskFragment.TAG_TASK_FRAGMENT);
+            taskFragment.resetView();
         }
 
         request_button.setOnClickListener(new View.OnClickListener() {

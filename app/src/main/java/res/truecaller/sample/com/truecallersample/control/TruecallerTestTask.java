@@ -114,9 +114,10 @@ public class TruecallerTestTask extends AsyncTask<Void,Object,TaskResult> {
         operationCallback.onProgressEnded();
         if(result!=null) {
             result.setEndTime(new Date());
+            operationCallback.storeTaskResult(result);
             if(operationCallback instanceof First10thResultCallback){
                 if (result.getFirstTenthElement() != null) {
-                    ((First10thResultCallback)operationCallback).onTenthChar(result.getFirstTenthElement());
+                    ((First10thResultCallback) operationCallback).onTenthChar(result.getFirstTenthElement());
                     operationCallback.useStringResult(result.getFirstTenthElementString());
                 }
             }else if(operationCallback instanceof All10thResultCallback){
