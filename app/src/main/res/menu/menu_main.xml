@@ -6,4 +6,16 @@
         android:icon="@drawable/ic_action_search"
         app:actionViewClass="android.support.v7.widget.SearchView"
         app:showAsAction="always" />
+    <item android:id="@+id/menu_jump_result1"
+        android:title="@string/first_10_result"
+        android:orderInCategory="1"
+        app:showAsAction="never" />
+    <item android:id="@+id/menu_jump_result2"
+        android:title="@string/all_10_result"
+        android:orderInCategory="1"
+        app:showAsAction="never" />
+    <item android:id="@+id/menu_jump_result3"
+        android:title="@string/word_count"
+        android:orderInCategory="1"
+        app:showAsAction="never" />
 </menu>

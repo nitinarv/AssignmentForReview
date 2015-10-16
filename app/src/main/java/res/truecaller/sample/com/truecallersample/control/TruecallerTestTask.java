@@ -9,10 +9,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
-import res.truecaller.sample.com.truecallersample.model.Operation;
 import res.truecaller.sample.com.truecallersample.model.ResponseDetails;
 import res.truecaller.sample.com.truecallersample.model.TaskResult;
-import res.truecaller.sample.com.truecallersample.model.Types;
 
 
 /**
@@ -21,7 +19,6 @@ import res.truecaller.sample.com.truecallersample.model.Types;
 public class TruecallerTestTask extends AsyncTask<Void,Object,TaskResult> {
 
 
-    Operation operation = Operation.FIRST_TENTH_ELEMENT;
     OperationCallback operationCallback = null;
     RestRelatedWork jobs = null;
     Context context = null;
@@ -33,8 +30,7 @@ public class TruecallerTestTask extends AsyncTask<Void,Object,TaskResult> {
     TaskResult taskResult = null;
     private int progressCount = 0;
 
-    public TruecallerTestTask(Context mContext, Operation mOperation, OperationCallback mOperationCallback) {
-        this.operation = mOperation;
+    public TruecallerTestTask(Context mContext, OperationCallback mOperationCallback) {
         this.context = mContext;
         this.operationCallback = mOperationCallback;
         this.taskResult = new TaskResult();
@@ -52,83 +48,58 @@ public class TruecallerTestTask extends AsyncTask<Void,Object,TaskResult> {
     protected TaskResult doInBackground(Void... params) {
 
         try {
-            publishProgress(new Integer(progressCount+=5));
             ResponseDetails responseDetails = jobs.getWebPage(context);
             String responseString = responseDetails.getReponseString();
-            switch (operation) {
-                case FIRST_TENTH_ELEMENT:
-                    if(responseString!=null) {
-                        publishProgress(new Integer(progressCount+=50));
-                        Character nthItem = responseString.charAt(indexOfInterest-1);
-                        taskResult.setFirstTenthElement(nthItem);
-                        publishProgress(new Integer(progressCount+=40));
-                        taskResult.setFirstTenthElementString(nthItem.toString());
-                        publishProgress(new Integer(progressCount+=45));
-                        return taskResult;
+
+            if(responseString!=null) {
+                if (operationCallback instanceof First10thResultCallback) {
+
+                    Character nthItem = responseString.charAt(indexOfInterest - 1);
+
+                    taskResult.setFirstTenthElement(nthItem);
+                    taskResult.setFirstTenthElementString(nthItem.toString());
+                    return taskResult;
+
+                } else if (operationCallback instanceof All10thResultCallback) {
+
+                    List<Character> listOfCharacters = new ArrayList<Character>();
+
+                    StringBuilder stringBuilder = new StringBuilder();
+                    for (int i = (indexOfInterest - 1); i < responseString.length(); i = i + indexOfInterest) {
+                        Character charAtIndex = responseString.charAt(i);
+                        listOfCharacters.add(charAtIndex);
+                        stringBuilder.append(charAtIndex + ",\n");
                     }
-                    break;
-                case ALL_TENTH_ELEMENT:
-                    if(responseString!=null) {
-                        List<Character> listOfCharacters = null;
-                        publishProgress(new Integer(progressCount+=25));
-                        for(int i=(indexOfInterest-1); i < responseString.length(); i = i + indexOfInterest){
-                            if(listOfCharacters==null)
-                                listOfCharacters = new ArrayList<Character>();
-                            Character charAtIndex = responseString.charAt(i);
-                            listOfCharacters.add(charAtIndex);
+
+                    taskResult.setAllTenthElementString(stringBuilder.toString());
+                    taskResult.setAllTenthElement(listOfCharacters);
+
+                    return taskResult;
+
+                } else if (operationCallback instanceof RepeatedWordCountCallback) {
+
+                    String[] splited = responseString.split("\\s+");
+                    HashMap<String, Integer> wordCountMap = new HashMap<String, Integer>();
+                    ;
+                    StringBuilder stringBuilder = new StringBuilder();
+                    for (String wordItem : splited) {
+                        if (!wordCountMap.containsKey(wordItem.toLowerCase())) {
+                            wordCountMap.put(wordItem.toLowerCase(), 1);
+                        } else {
+                            wordCountMap.put(wordItem.toLowerCase(), (wordCountMap.get(wordItem.toLowerCase()) + 1));
                         }
-
-                        publishProgress(new Integer(progressCount += 35));
-                        StringBuilder stringBuilder = new StringBuilder();
-                        //convert to string
-                        for(Character entry: listOfCharacters){
-                            stringBuilder.append(entry);
-                            stringBuilder.append(",\n");
-                        }
-
-                        taskResult.setAllTenthElementString(stringBuilder.toString());
-
-                        publishProgress(new Integer(progressCount += 35));
-                        taskResult.setAllTenthElement(listOfCharacters);
-
-                        return taskResult;
                     }
-                    break;
-                case WORD_GET:
-                    if(responseString!=null){
-                        publishProgress(new Integer(progressCount += 5));
-                        String[] splited = responseString.split("\\s+");
-                        publishProgress(new Integer(progressCount += 5));
-                        HashMap<String, Integer> wordCountMap = null;
-                        publishProgress(new Integer(progressCount += 5));
-                        for(String wordItem: splited){
-                            if(wordCountMap==null)
-                                wordCountMap = new HashMap<String, Integer>();
-
-                            if(!wordCountMap.containsKey(wordItem.toLowerCase())){
-                                wordCountMap.put(wordItem.toLowerCase(), 1);
-                            }else{
-                                wordCountMap.put(wordItem, (wordCountMap.get(wordItem.toLowerCase())+1));
-                            }
-                        }
-                        publishProgress(new Integer(progressCount += 40));
-                        //convert to string
-                        Set<String> mapkeys = wordCountMap.keySet();
-                        StringBuilder stringBuilder = new StringBuilder();
-                        for(String entry: mapkeys){
-                            stringBuilder.append("key: "+entry);
-                            stringBuilder.append(", value(count): "+wordCountMap.get(entry));
-                            stringBuilder.append("\n");
-                        }
-
-                        taskResult.setUniqueWordCountString(stringBuilder.toString());
-                        publishProgress(new Integer(progressCount += 40));
-                        taskResult.setUniqueWordCount(wordCountMap);
-                        return taskResult;
+                    //convert to string
+                    Set<String> mapkeys = wordCountMap.keySet();
+                    for (String entry : mapkeys) {
+                        stringBuilder.append("key: " + entry + ", value(count): " + wordCountMap.get(entry) + "\n");
                     }
-                    break;
-                default:
-                    break;
+
+                    taskResult.setUniqueWordCountString(stringBuilder.toString());
+                    taskResult.setUniqueWordCount(wordCountMap);
+                    return taskResult;
+
+                }
             }
         }catch (Exception e){
             publishProgress(e);
@@ -143,26 +114,22 @@ public class TruecallerTestTask extends AsyncTask<Void,Object,TaskResult> {
         operationCallback.onProgressEnded();
         if(result!=null) {
             result.setEndTime(new Date());
-            switch (operation) {
-                case FIRST_TENTH_ELEMENT: {
-                    if (result.getFirstTenthElement() != null) {
-                        operationCallback.onTenthChar(result.getFirstTenthElement());
-                        operationCallback.useStringResult(result.getFirstTenthElementString());
-                    }
+            operationCallback.storeTaskResult(result);
+            if(operationCallback instanceof First10thResultCallback){
+                if (result.getFirstTenthElement() != null) {
+                    ((First10thResultCallback) operationCallback).onTenthChar(result.getFirstTenthElement());
+                    operationCallback.useStringResult(result.getFirstTenthElementString());
                 }
-                break;
-                case ALL_TENTH_ELEMENT:
-                    if (result.getAllTenthElement() != null) {
-                        operationCallback.onAllTenthCharsList(result.getAllTenthElement());
-                        operationCallback.useStringResult(result.getAllTenthElementString());
-                    }
-                    break;
-                case WORD_GET:
-                    if (result.getUniqueWordCount() != null) {
-                        operationCallback.onAllRepeatedWordWithCount(result.getUniqueWordCount());
-                        operationCallback.useStringResult(result.getUniqueWordCountString());
-                    }
-                    break;
+            }else if(operationCallback instanceof All10thResultCallback){
+                if (result.getAllTenthElement() != null) {
+                    ((All10thResultCallback)operationCallback).onAllTenthCharsList(result.getAllTenthElement());
+                    operationCallback.useStringResult(result.getAllTenthElementString());
+                }
+            }else if(operationCallback instanceof RepeatedWordCountCallback){
+                if (result.getUniqueWordCount() != null) {
+                    ((RepeatedWordCountCallback)operationCallback).onAllRepeatedWordWithCount(result.getUniqueWordCount());
+                    operationCallback.useStringResult(result.getUniqueWordCountString());
+                }
             }
         }
     }
@@ -171,45 +138,17 @@ public class TruecallerTestTask extends AsyncTask<Void,Object,TaskResult> {
     protected void onProgressUpdate(Object... values) {
         super.onProgressUpdate(values);
         if(operationCallback!=null){
-            switch (progressUpdateObject(values[0])){
-                case EXCEPTION:
-                    Exception e = (Exception)values[0];
-                    operationCallback.processException(e);
-                    break;
-                case PROGRESSUPDATE:
-                    Integer progressCount = (Integer) values[0];
-                    operationCallback.onProgressUpdated(progressCount);
-                    break;
-                case STAGEUPDATE:
-                    String data = (String) values[0];
-                    data = data.replaceAll(STAGEUPDATE,"");
-                    break;
-                case UNDEFINED:
-                    break;
+            if(values[0] instanceof Exception) {
+                Exception e = (Exception) values[0];
+                operationCallback.processException(e);
+            }else if(values[0] instanceof Integer) {
+                Integer progressCount = (Integer) values[0];
+                operationCallback.onProgressUpdated(progressCount);
+            }else if(values[0] instanceof String) {
+                String data = (String) values[0];
             }
+       }
 
-        }
-
-    }
-
-    /**
-     *
-     * */
-    private Types progressUpdateObject(Object value){
-        if(value instanceof Exception){
-            return Types.EXCEPTION;
-        }else if(value instanceof  Integer){
-            return Types.PROGRESSUPDATE;
-        }else if(value instanceof String){
-            String data = (String) value;
-            if(data.contains(STAGEUPDATE)){
-                return Types.STAGEUPDATE;
-            }else{
-                return Types.UNDEFINED;
-            }
-        }else{
-            return Types.UNDEFINED;
-        }
     }
 
 }
